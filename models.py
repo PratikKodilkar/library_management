@@ -1,4 +1,4 @@
-from config import db
+from app import db
 
 # Models
 class User(db.Model):
@@ -30,7 +30,7 @@ class Book(db.Model):
     def __repr__(self):
         return f"Title : {self.title}, Author: {self.author}, Publish date: {self.published_date}, Available: {self.available}"
     
-class borrow(db.Model):
+class Borrow(db.Model):
     __tablename__ = 'borrow'
 
     id = db.Column(db.Integer, primary_key=True)

@@ -1,25 +1,21 @@
 from flask import Flask
-from config import db
-import os
+from flask_sqlalchemy import SQLAlchemy
+from config import Config
 
-basedir = os.path.abspath(os.path.dirname(__file__))
+db = SQLAlchemy()
 
-app = Flask(__name__)
-# adding configuration for using a sqlite database
-app.config['SQLALCHEMY_DATABASE_URI'] =\
-        'sqlite:///' + os.path.join(basedir, 'instance', 'library_database.db')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['DEBUG'] = True
+def create_app():
+    app = Flask(__name__)
+    # adding configuration for using a sqlite database
+    app.config.from_object(Config)
 
-db.init_app(app)
+    db.init_app(app)
 
-def register_blueprints(app):
-    from routes.users import users_bp
-    app.register_blueprint(users_bp)
-
-register_blueprints(app)
-
-if __name__ == '__main__':
     with app.app_context():
+        from models import User, Book, Borrow
         db.create_all()
-    app.run(debug=True)
+
+    from routes.users import users_bp
+    app.register_blueprint(users_bp, url_prefix='/api')
+
+    return app
