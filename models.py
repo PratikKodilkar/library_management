@@ -30,6 +30,15 @@ class Book(db.Model):
     def __repr__(self):
         return f"Title : {self.title}, Author: {self.author}, Publish date: {self.published_date}, Available: {self.available}"
     
+    def json(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'author': self.author,
+            'published_date': self.published_date,
+            'available': self.available
+        }
+    
 class Borrow(db.Model):
     __tablename__ = 'borrow'
 

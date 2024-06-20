@@ -16,6 +16,9 @@ def create_app():
         db.create_all()
 
     from routes.users import users_bp
+    from routes.books import books_bp
+
     app.register_blueprint(users_bp, url_prefix='/api')
+    app.register_blueprint(books_bp, url_prefix='/api')
 
     return app
